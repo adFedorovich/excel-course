@@ -27,7 +27,6 @@
   "homepage": "https://github.com/adFedorovich/excel-course#readme",
   "devDependencies": {
     "@babel/core": "^7.11.6",
-    "@babel/polyfill": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
@@ -45,5 +44,9 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.11.3",
+    "normalize.css": "^8.0.1"
   }
 }
