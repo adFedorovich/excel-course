@@ -37,6 +37,32 @@ class Dom {
   off(eventType, callbalck) {
     this.$el.removeEventListener(eventType, callbalck)
   }
+
+  closest(selector) {
+    return $(this.$el.closest(selector))
+  }
+
+  getCoords() {
+    return this.$el.getBoundingClientRect()
+  }
+
+  get data() {
+    return this.$el.dataset
+  }
+
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector)
+  }
+
+  css(styles = {}) {
+    for (const [key, value] of Object.entries(styles)) {
+      this.$el.style[key] = value
+    }
+  }
+
+  removeAttr(attribute) {
+    this.$el.removeAttribute(attribute);
+  }
 }
 
 
@@ -53,3 +79,4 @@ $.create = (tagName, classes ='') => {
   }
   return $(el)
 }
+

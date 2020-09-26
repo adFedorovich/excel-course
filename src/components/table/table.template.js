@@ -4,22 +4,27 @@ const CODES = {
 }
 
 
-function toCell() {
+function toCell(_, i) {
   return `
-    <div class="cell" contenteditable></div>
+    <div class="cell" contenteditable data-col="${i}"></div>
   `
 }
 
-function toCol(col) {
+function toCol(col, i) {
   return `
-    <div class="column">${col}</div>
+    <div class="column" data-type="resizable" data-col="${i}">
+      ${col}
+      <div class="col-resize" data-resize="col"></div>
+    </div>
   `
 }
 
 function toRow(content, i) {
   return `
-    <div class="row">
-      <div class="row-info">${i ? i : ''}</div>
+    <div class="row" data-type="resizable">
+      <div class="row-info">
+        ${i ? i + '<div class="row-resize" data-resize="row"></div>' : ''}
+      </div>
       <div class="row-data">${content}</div>
     </div>
   `
@@ -30,10 +35,9 @@ export function createTable(rowsCount = 15) {
   const rows = []
   const cols = new Array(colsCount)
       .fill('')
-      .map((_, i) => toCol(String.fromCharCode(CODES.A + i)))
+      .map((_, i) => toCol(String.fromCharCode(CODES.A + i), i))
       .join('')
 
-  console.log(cols);
   rows.push(toRow(cols))
 
   for (let i = 0; i < rowsCount; i++) {
