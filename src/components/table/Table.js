@@ -7,9 +7,11 @@ import {TableSelection} from '@components/table/TableSelection'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
-      listeners: ['mousedown', 'keydown']
+      name: 'Table',
+      listeners: ['mousedown', 'keydown'],
+      ...options
     })
   }
 
@@ -25,6 +27,10 @@ export class Table extends ExcelComponent {
     super.init()
     const $cel = this.$root.find('[data-id="0:0"]')
     this.selection.select($cel)
+    this.emmiter.subscribe('testEmitter', (text) => {
+      this.selection.current.text(text)
+      console.log('text from subscriber: ', text);
+    })
   }
 
   onMousedown(event) {
