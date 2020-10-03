@@ -64,29 +64,15 @@ export class Table extends ExcelComponent {
       'ArrowDown'
     ]
     const {key, shiftKey} = event;
-<<<<<<< HEAD
-    const selection = () => {
+
+    if (keys.includes(key)) {
+      if (shiftKey && key !== 'Tab') return
       event.preventDefault()
       const id = this.selection.current.id(true)
       const $next = this.$root.find(nextSelector(key, id, shiftKey));
       this.selection.select($next)
       this.$emit('table:select', $next)
     }
-    if (keys.includes(key) && !shiftKey) {
-      selection()
-    }
-    if (key === 'Tab' && shiftKey) {
-      selection()
-    }
-=======
-    if (keys.includes(key) && !shiftKey) {
-      event.preventDefault()
-      const id = this.selection.current.id(true)
-      const $next = this.$root.find(nextSelector(key, id));
-      this.selection.select($next)
-      this.$emit('table:select', $next)
-    }
->>>>>>> c86908521feb40db7c45c9ddffccfa4d24fd6b20
   }
 
   onInput(event) {
