@@ -14,7 +14,14 @@ class Dom {
   }
 
   text(text) {
-    this.$el.textContent = text
+    if (typeof text === 'string') {
+      this.$el.textContent = text
+      return this
+    }
+    if (this.$el.tagName === 'Input') {
+      return this.$el.value.trim()
+    }
+    return this.$el.textContent.trim()
   }
 
   clear() {
@@ -96,7 +103,6 @@ class Dom {
     return this
   }
 }
-
 
 export function $(selector) {
   return (
