@@ -15,8 +15,13 @@ export function matrix($target, $current) {
   }, [])
 }
 
-export function nextSelector(key, {col, row}) {
-  const MIN_VALUE =0;
+export function nextSelector(key, {col, row}, shiftKey) {
+  const MIN_VALUE = 0;
+
+  if (key === 'Tab') {
+    key = shiftKey ? 'TabShift' : 'Tab'
+  }
+
   switch (key) {
     case 'Enter':
     case 'ArrowDown':
@@ -27,6 +32,7 @@ export function nextSelector(key, {col, row}) {
       col++
       break;
     case 'ArrowLeft':
+    case 'TabShift':
       col = col - 1 < MIN_VALUE ? MIN_VALUE : --col
       break;
     case 'ArrowUp':
