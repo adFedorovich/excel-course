@@ -1,8 +1,13 @@
 import {$} from '@core/dom'
+import {
+  shouldResize,
+  isCell,
+  matrix,
+  nextSelector
+} from '@components/table/table.functions'
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@components/table/table.template'
 import {resizeHandler} from '@components/table/table.resize'
-import {isCell, matrix, nextSelector} from '@components/table/table.functions'
 import {TableSelection} from '@components/table/TableSelection'
 
 export class Table extends ExcelComponent {
@@ -26,8 +31,7 @@ export class Table extends ExcelComponent {
   init() {
     super.init()
     const $cel = this.$root.find('[data-id="0:0"]')
-    this.selection.select($cel)
-    this.$emit('table:select', $cel)
+    this.selectCell($cel)
 
     this.$on('formula:input', (text) => {
       this.selection.current.text(text)
@@ -36,21 +40,37 @@ export class Table extends ExcelComponent {
     this.$on('formula:done', () => {
       this.selection.current.focus()
     })
+
+    this.$subscribe((state) => console.log('Table state: ', state))
+  }
+
+  selectCell($cell) {
+    this.selection.select($cell)
+    this.$emit('table:select', $cell)
+  }
+
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler(this.$root, event)
+      console.log(data);
+      this.$dispatch({type: 'TABLE_RESIZE', data})
+    } catch (e) {
+      console.warn(e.message);
+    }
   }
 
   onMousedown(event) {
-    const type = event.target.dataset.resize;
-    if (type) resizeHandler(this.$root, event, type)
-    else if (isCell(event)) {
+    if (shouldResize(event)) {
+      this.resizeTable(event)
+    } else if (isCell(event)) {
       const $target = $(event.target)
       if (event.shiftKey) {
-        const $cels = matrix($target, this.selection.current)
+        const $cells = matrix($target, this.selection.current)
             .map(id => this.$root.find(`[data-id="${id}"]`))
-        this.selection.selectGroup($cels);
+        this.selection.selectGroup($cells)
       } else {
-        this.selection.select($target)
+        this.selectCell($target)
       }
-      this.$emit('table:select', $target)
     }
   }
 
@@ -70,8 +90,7 @@ export class Table extends ExcelComponent {
       event.preventDefault()
       const id = this.selection.current.id(true)
       const $next = this.$root.find(nextSelector(key, id, shiftKey));
-      this.selection.select($next)
-      this.$emit('table:select', $next)
+      this.selectCell($next)
     }
   }
 

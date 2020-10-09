@@ -42,6 +42,7 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
       '@core': path.resolve(__dirname, 'src/core'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@redux': path.resolve(__dirname, 'src/redux'),
     },
   },
   devServer: {
