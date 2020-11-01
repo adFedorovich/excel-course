@@ -39,7 +39,8 @@ export function resizeHandler($root, event) {
       document.onmouseup = null
       resolve({
         value,
-        id: type === 'col' ? $parent.data.col : null
+        type,
+        id: $parent.data[type]
       })
     }
   })
